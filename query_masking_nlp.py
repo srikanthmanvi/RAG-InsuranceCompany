@@ -22,6 +22,8 @@ date_pattern = re.compile(r'\b(\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{2,4}[-/]\d{1,2}[
 dob_pattern = re.compile(
     r"(January|February|March|April|May|June|July|August|September|October|November|December)\s(\d{1,2})(st|nd|rd|th),\s(\d{4})")
 address_pattern = re.compile(r'\d+\s+[\w\s]+\,\s+[A-Za-z]+\,\s+[A-Z]{2}\s+\d{5}(-\d{4})?')
+zip_code_pattern =  re.compile(r'\b\d{5}(?:-\d{4})?\b')
+
 policy_number_pattern = re.compile(r"[A-Z]{3}\d{4}\.$")  # 3 characters followed by 4 digits, in our case
 
 Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -54,6 +56,7 @@ def mask_pii(text):
     text = email_pattern.sub('[EMAIL MASKED]', text)
     text = date_pattern.sub('[DATE MASKED]', text)
     text = address_pattern.sub('[ADDRESS MASKED]', text)
+    text = zip_code_pattern.sub('[ZIP MASKED]', text)
     text = dob_pattern.sub('[DOB MASKED]', text)
     text = policy_number_pattern.sub('[POLICY MASKED]', text)
 
